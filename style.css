@@ -56,6 +56,19 @@ body {
   z-index: 1;
 }
 
+.grain-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 3;
+}
+
 .glow-orb {
   position: absolute;
   border-radius: 50%;
@@ -678,21 +691,23 @@ nav a:hover {
 }
 
 /* Animations */
+.js-active .fade-in {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.js-active .fade-in.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
 .slide-up {
   opacity: 0;
-  transform: translateY(30px);
-  animation: slideUp 0.8s forwards ease-out;
-}
-
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
+  transform: translateY(40px);
+  animation: slideUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: 0.2s;
 }
 
 @keyframes slideUp {
@@ -702,23 +717,31 @@ nav a:hover {
   }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .two-col, .synergy-grid, .three-col {
-    grid-template-columns: 1fr;
-  }
-  
-  nav {
-    display: none;
-  }
-  
-  .hero-actions {
-    flex-direction: column;
-  }
-  
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 1.5rem;
-  }
+/* Glass Refinement */
+.glass-card {
+  position: relative;
+  background: rgba(17, 24, 39, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent 50%, rgba(255,255,255,0.05));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Grain Effect */
+.grid-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
 }
